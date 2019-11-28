@@ -14,6 +14,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -31,10 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -42,7 +43,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.lang.reflect.Method;
 
-import co.kr.dreamforone.taeri.R;
+import co.kr.dreamforone.tdaeri.R;
 import util.BackPressCloseHandler;
 import util.Common;
 import util.LocationPosition;
@@ -557,10 +558,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("logout","로그아웃");
             Common.savePref(getApplicationContext(),"ss_mb_id","");
         }
-        @JavascriptInterface
-        public void setPosition(){
-            mHandler.sendEmptyMessage(0);
-        }
+
 
         @JavascriptInterface
         public void getLocation(){
@@ -568,7 +566,8 @@ public class MainActivity extends AppCompatActivity {
             LocationPosition.act=MainActivity.this;
             LocationPosition.setPosition(LocationPosition.act);
             Toast.makeText(mContext, ""+LocationPosition.lat, Toast.LENGTH_SHORT).show();
-            webView.loadUrl("javascript:getCurrent('"+LocationPosition.getAddress(LocationPosition.lat,LocationPosition.lng)+"','"+LocationPosition.lat+"','"+LocationPosition.lng+"');");
+            mHandler.sendEmptyMessage(0);
+
         }
     }
 
@@ -585,7 +584,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(LocationPosition.lng!=0.0){
                 mHandler.removeMessages(0);
-
+                webView.loadUrl("javascript:getCurrent('"+LocationPosition.getAddress(LocationPosition.lat,LocationPosition.lng)+"','"+LocationPosition.lat+"','"+LocationPosition.lng+"');");
             }else{
                 if(gpsCount==0)
 
