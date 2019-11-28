@@ -14,10 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -36,6 +33,10 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -166,9 +167,10 @@ public class MainActivity extends AppCompatActivity {
         setLayout();
         //토큰 값 생성
         FirebaseApp.initializeApp(this);//firebase 등록함
-        FirebaseMessaging.getInstance().subscribeToTopic("bshangoeul");
+        FirebaseMessaging.getInstance().subscribeToTopic("tdaeri");
         //토큰 생성
         Common.TOKEN= FirebaseInstanceId.getInstance().getToken();
+        Log.d("token",Common.TOKEN);
         try {
             if (Common.TOKEN.equals("") || Common.TOKEN.equals(null)) {
                 //토큰 값 재생성
@@ -565,7 +567,7 @@ public class MainActivity extends AppCompatActivity {
 
             LocationPosition.act=MainActivity.this;
             LocationPosition.setPosition(LocationPosition.act);
-            Toast.makeText(mContext, ""+LocationPosition.lat, Toast.LENGTH_SHORT).show();
+
             mHandler.sendEmptyMessage(0);
 
         }
@@ -584,7 +586,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(LocationPosition.lng!=0.0){
                 mHandler.removeMessages(0);
-                webView.loadUrl("javascript:getCurrent('"+LocationPosition.getAddress(LocationPosition.lat,LocationPosition.lng)+"','"+LocationPosition.lat+"','"+LocationPosition.lng+"');");
+                webView.loadUrl("javascript:getCurrent('"+LocationPosition.getAddress(LocationPosition.lat,LocationPosition.lng)+"','"+LocationPosition.lng+"','"+LocationPosition.lat+"');");
             }else{
                 if(gpsCount==0)
 
