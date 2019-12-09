@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseMessaging.getInstance().subscribeToTopic("tdaeri");
         //토큰 생성
         Common.TOKEN= FirebaseInstanceId.getInstance().getToken();
-        Log.d("token",Common.TOKEN);
+        //Log.d("token",Common.TOKEN);
         try {
             if (Common.TOKEN.equals("") || Common.TOKEN.equals(null)) {
                 //토큰 값 재생성
@@ -504,7 +504,7 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
 
         }
-
+        mHandler.sendEmptyMessage(0);
         //netCheck.networkCheck();
     }
     //홈버튼 눌러서 바탕화면 나갔을 때
@@ -583,7 +583,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-
+            LocationPosition.act=MainActivity.this;
+            LocationPosition.setPosition(LocationPosition.act);
             if(LocationPosition.lng!=0.0){
                 mHandler.removeMessages(0);
                 webView.loadUrl("javascript:getCurrent('"+LocationPosition.getAddress(LocationPosition.lat,LocationPosition.lng)+"','"+LocationPosition.lng+"','"+LocationPosition.lat+"');");
@@ -592,7 +593,7 @@ public class MainActivity extends AppCompatActivity {
 
                     gpsCount++;
 
-                mHandler.sendEmptyMessageDelayed(0,1000);
+                mHandler.sendEmptyMessageDelayed(0,100);
 
             }
         }
