@@ -53,9 +53,9 @@ import util.NetworkCheck;
 
 public class MainActivity extends AppCompatActivity {
     LinearLayout webLayout;
-    RelativeLayout networkLayout;
+    //RelativeLayout networkLayout;
     public static WebView webView;
-    NetworkCheck netCheck;
+    //NetworkCheck netCheck;
     Button replayBtn;
     public static boolean execBoolean = true;
     private BackPressCloseHandler backPressCloseHandler;
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
     //레이아웃 설정
     public void setLayout() {
-        networkLayout = (RelativeLayout) findViewById(R.id.networkLayout);//네트워크 연결이 끊겼을 때 레이아웃 가져오기
+       // networkLayout = (RelativeLayout) findViewById(R.id.networkLayout);//네트워크 연결이 끊겼을 때 레이아웃 가져오기
         webLayout = (LinearLayout) findViewById(R.id.webLayout);//웹뷰 레이아웃 가져오기
 
         webView = (WebView) findViewById(R.id.webView);//웹뷰 가져오기
@@ -234,14 +234,14 @@ public class MainActivity extends AppCompatActivity {
         }
         setting.setUserAgentString("Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Mobile Safari/537.36"+"/APP");
         webView.addJavascriptInterface(new WebJavascriptEvent(), "Android");
-
+        //뒤로가기 버튼을 눌렀을 때 클래스로 제어함
+        backPressCloseHandler = new BackPressCloseHandler(this);
         //네트워크 체킹을 할 때 쓰임
-        netCheck = new NetworkCheck(this, this);
+       /* netCheck = new NetworkCheck(this, this);
         netCheck.setNetworkLayout(networkLayout);
         netCheck.setWebLayout(webLayout);
         netCheck.networkCheck();
-        //뒤로가기 버튼을 눌렀을 때 클래스로 제어함
-        backPressCloseHandler = new BackPressCloseHandler(this);
+
 
         replayBtn=(Button)findViewById(R.id.replayBtn);
         replayBtn.setOnClickListener(new View.OnClickListener() {
@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 netCheck.networkCheck();
             }
-        });
+        });*/
     }
 
     WebChromeClient chrome;
@@ -526,7 +526,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        netCheck.stopReciver();
+        //netCheck.stopReciver();
        // unregisterReceiver(receiver);
 
 
