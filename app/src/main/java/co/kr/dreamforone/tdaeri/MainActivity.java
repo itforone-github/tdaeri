@@ -76,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
             "android.permission.ACCESS_COARSE_LOCATION",
             "android.permission.READ_PHONE_STATE"
     };
-
+    public static boolean isBack=false;
+    public static int resume=0;
 
     private boolean hasPermissions(String[] permissions) {
         // 퍼미션 확인
@@ -488,6 +489,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        webView.reload();
+        Log.d("onResume","onResume");
+        if(isBack&&resume==0) {
+            Intent startIntent = new Intent(MainActivity.this, SplashActivity.class);
+            startActivity(startIntent);
+            isBack=false;
+            resume++;
+        }
         /* cookie */
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             CookieSyncManager.getInstance().startSync();
@@ -521,6 +530,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         execBoolean=false;
+        isBack=true;
+        resume=0;
     }
 
     @Override

@@ -29,7 +29,8 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
+        MainActivity.isBack=false;
+        MainActivity.resume++;
         //버전별 체크를 한 후 마시멜로 이상이면 퍼미션 체크 여부
         try {
             if (Build.VERSION.SDK_INT >= 23) {
