@@ -162,10 +162,6 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             CookieSyncManager.createInstance(this);
         }
-
-
-
-        setLayout();
         //토큰 값 생성
         FirebaseApp.initializeApp(this);//firebase 등록함
         FirebaseMessaging.getInstance().subscribeToTopic("tdaeri");
@@ -183,6 +179,10 @@ public class MainActivity extends AppCompatActivity {
             //토큰 값 재생성
             refreshToken();
         }
+
+
+        setLayout();
+
         Intent startIntent = new Intent(MainActivity.this,SplashActivity.class);
         startActivity(startIntent);
 
@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("url",url);
 
                 if (url.startsWith("tel")) {
-                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    Intent intent = new Intent(Intent.ACTION_CALL);
                     intent.setData(Uri.parse(url));
                     try {
                         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
@@ -367,7 +367,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                }else if(url.startsWith("https://open")){
+                }/*else if(url.startsWith("https://open")){
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY| Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
@@ -405,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("error1",e.toString());
                         e.printStackTrace();
                     }
-                }
+                }*/
 
                 if(LocationPosition.lng!=0.0){
                     LocationPosition.act=MainActivity.this;
@@ -447,9 +447,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }*/
                 //로그인할 때
-                if(url.startsWith(getString(R.string.domain)+"bbs/login.php")||url.startsWith(getString(R.string.domain)+"bbs/register_form.php")){
-                    view.loadUrl("javascript:fcmKey('"+ Common.TOKEN+"')");
-                }
+                view.loadUrl("javascript:fcmKey('"+ Common.TOKEN+"')");
 
                 if (url.startsWith(getString(R.string.url)+"index.php") || url.startsWith(getString(R.string.domain)+"/currentLat")||url.equals(getString(R.string.url)+"bbs/board.php?bo_table=short")||url.startsWith(getString(R.string.domain)+"bbs/login.php")) {
                     isIndex=true;
@@ -492,8 +490,8 @@ public class MainActivity extends AppCompatActivity {
         webView.reload();
         Log.d("onResume","onResume");
         if(isBack&&resume==0) {
-            Intent startIntent = new Intent(MainActivity.this, SplashActivity.class);
-            startActivity(startIntent);
+           /* Intent startIntent = new Intent(MainActivity.this, SplashActivity.class);
+            startActivity(startIntent);*/
             isBack=false;
             resume++;
         }
@@ -501,8 +499,6 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             CookieSyncManager.getInstance().startSync();
         }
-
-
 
         execBoolean=true;
         Log.d("newtork","onResume");
