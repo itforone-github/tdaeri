@@ -33,13 +33,16 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.iid.FirebaseInstanceId;
+
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.lang.reflect.Method;
@@ -100,19 +103,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE: {
                 //퍼미션을 거절했을 때 메시지 출력 후 종료
                 if (!hasPermissions(PERMISSIONS)) {
 
-                }else{
-                    LocationPosition.act=MainActivity.this;
+                } else {
+                    LocationPosition.act = MainActivity.this;
                     LocationPosition.setPosition(this);
-                    if(LocationPosition.lng==0.0){
+                    if (LocationPosition.lng == 0.0) {
                         LocationPosition.setPosition(this);
                     }
-                    String place= LocationPosition.getAddress(LocationPosition.lat,LocationPosition.lng);
-                    webView.loadUrl("javascript:getAddress('"+place+"')");
+                    String place = LocationPosition.getAddress(LocationPosition.lat, LocationPosition.lng);
+                    webView.loadUrl("javascript:getAddress('" + place + "')");
                 }
                 return;
             }
@@ -165,8 +169,17 @@ public class MainActivity extends AppCompatActivity {
         //토큰 값 생성
         FirebaseApp.initializeApp(this);//firebase 등록함
         FirebaseMessaging.getInstance().subscribeToTopic("tdaeri");
-        //토큰 생성
-        Common.TOKEN= FirebaseInstanceId.getInstance().getToken();
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    return;
+                }
+                Common.TOKEN= task.getResult();
+
+            }
+        });
+
         //Log.d("token",Common.TOKEN);
         try {
             if (Common.TOKEN.equals("") || Common.TOKEN.equals(null)) {
@@ -211,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
         WebSettings setting = webView.getSettings();//웹뷰 세팅용
 
         setting.setAllowFileAccess(true);//웹에서 파일 접근 여부
-        setting.setAppCacheEnabled(true);//캐쉬 사용여부
+//        setting.setAppCacheEnabled(true);//캐쉬 사용여부
         setting.setGeolocationEnabled(true);//위치 정보 사용여부
         setting.setDatabaseEnabled(true);//HTML5에서 db 사용여부
         setting.setDomStorageEnabled(true);//HTML5에서 DOM 사용여부
@@ -583,7 +596,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void refreshToken(){
         FirebaseMessaging.getInstance().subscribeToTopic("tdaeri");
-        Common.TOKEN= FirebaseInstanceId.getInstance().getToken();
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    return;
+                }
+                Common.TOKEN= task.getResult();
+
+            }
+        });
     }
 
     Handler mHandler=new Handler(){

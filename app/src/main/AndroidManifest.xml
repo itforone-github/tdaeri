@@ -2,12 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="co.kr.dreamforone.tdaeri">
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_ WIFI_STATE" />
+
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" /><!-- 이미지 권한설정 -->
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" /><!-- 비디오 권한설정 -->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" /><!-- 오디오 권한설정 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -21,12 +21,14 @@
         android:usesCleartextTraffic="true"
         >
         <meta-data android:name="android.webkit.WebView.EnableSafeBrowsing" android:value="true" />
-        <service android:name="co.kr.dreamforone.tdaeri.MyFirebaseMessagingService">
+        <service android:name="co.kr.dreamforone.tdaeri.MyFirebaseMessagingService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name="co.kr.dreamforone.tdaeri.MyFirebaseInstanceIDService">
+        <service android:name="co.kr.dreamforone.tdaeri.MyFirebaseInstanceIDService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
@@ -34,7 +36,7 @@
         <activity android:name="co.kr.dreamforone.tdaeri.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="portrait"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
